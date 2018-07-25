@@ -26,7 +26,6 @@ declare module "sfx.module-manager" {
         getComponentAsync(componentIdentity: "http.electron-http-client", serverCertValidator?: ServerCertValidator): Promise<IHttpClient>;
         getComponentAsync(componentIdentity: "http.electron-https-client", serverCertValidator?: ServerCertValidator): Promise<IHttpClient>;
 
-        getComponentAsync(componentIdentity: "http.client-builder", serverCertValidator?: ServerCertValidator): Promise<IHttpClientBuilder>;
         getComponentAsync(componentIdentity: "http.node-client-builder", serverCertValidator?: ServerCertValidator): Promise<IHttpClientBuilder>;
         getComponentAsync(componentIdentity: "http.electron-client-builder", serverCertValidator?: ServerCertValidator): Promise<IHttpClientBuilder>;
 
