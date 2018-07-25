@@ -17,7 +17,7 @@ import * as appUtils from "../../utilities/appUtils";
             version: appUtils.getAppVersion(),
             singleton: true,
             descriptor: (settings: ISettings, httpsClient: IHttpClient) =>
-                import("./package-manager").then((module) => new module.default(settings, httpsClient)),
+                import("./package-manager").then((module) => new module.PackageManager(settings, httpsClient)),
             deps: ["settings", "http.https-client"]
         });
 
@@ -29,5 +29,5 @@ import * as appUtils from "../../utilities/appUtils";
 
 (<IModule>exports).initializeAsync = (moduleManager: IModuleManager): Promise<void> =>
     moduleManager.getComponentAsync("settings")
-        .then((settings) => import("./module-load-policy").then((module) => new module.default(settings)))
+        .then((settings) => import("./module-load-policy").then((module) => new module.ModuleLoadingPolicy(settings)))
         .then((policy) => moduleManager.setModuleLoadingPolicy(policy));

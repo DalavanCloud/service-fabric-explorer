@@ -30,13 +30,13 @@ import * as appUtils from "../../utilities/appUtils";
             name: "logging.logger.console",
             version: appUtils.getAppVersion(),
             descriptor: (loggerSettings: ILoggerSettings, targetConsole: Console) =>
-                import("./loggers/console").then((module) => new module.default(loggerSettings, targetConsole))
+                import("./loggers/console").then((module) => new module.ConsoleLogger(loggerSettings, targetConsole))
         })
         .register<ILogger>({
             name: "logging.logger.app-insights",
             version: appUtils.getAppVersion(),
             descriptor: (loggerSettings: ILoggerSettings) =>
-                import("./loggers/app-insights").then((module) => new module.default(loggerSettings))
+                import("./loggers/app-insights").then((module) => new module.AppInsightsLogger(loggerSettings))
         });
 
     return {

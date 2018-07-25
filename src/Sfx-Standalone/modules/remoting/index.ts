@@ -19,13 +19,13 @@ import * as appUtils from "../../utilities/appUtils";
             name: "remoting.pattern.string",
             version: appUtils.getAppVersion(),
             singleton: false,
-            descriptor: (pattern: string) => import("./pattern/string").then((module) => new module.default(pattern))
+            descriptor: (pattern: string) => import("./pattern/string").then((module) => new module.StringPattern(pattern))
         })
         .register<any>({
             name: "remoting.pattern.regex",
             version: appUtils.getAppVersion(),
             singleton: false,
-            descriptor: (pattern: RegExp) => import("./pattern/regex").then((module) => new module.default(pattern))
+            descriptor: (pattern: RegExp) => import("./pattern/regex").then((module) => new module.RegexPattern(pattern))
         });
 
     return {

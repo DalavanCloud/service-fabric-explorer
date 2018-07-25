@@ -14,7 +14,7 @@ import * as appUtils from "../../utilities/appUtils";
             name: "settings.service",
             version: appUtils.getAppVersion(),
             singleton: true,
-            descriptor: () => import("./settings-service").then((module) => new module.default())
+            descriptor: () => import("./settings-service").then((module) => new module.SettingsService())
         })
         .register<ISettings>({
             name: "settings",

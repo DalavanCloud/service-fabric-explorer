@@ -11,10 +11,10 @@ import { IChannelProxy, IMessage } from "./common";
 import * as uuidv4 from "uuid/v4";
 
 import * as utils from "../../utilities/utils";
-import ProcessChannelProxy from "./proxy/process";
-import ElectronWebContentsChannelProxy from "./proxy/electron-web-contents";
-import ElectronIpcRendererChannelProxy from "./proxy/electron-ipc-renderer";
-import SocketChannelProxy from "./proxy/socket";
+import { ProcessChannelProxy } from "./proxy/process";
+import { ElectronWebContentsChannelProxy } from "./proxy/electron-web-contents";
+import { ElectronIpcRendererChannelProxy } from "./proxy/electron-ipc-renderer";
+import { SocketChannelProxy } from "./proxy/socket";
 
 interface IPromiseResolver {
     resolve: (value?: any) => void;

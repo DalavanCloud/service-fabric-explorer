@@ -9,7 +9,7 @@ import "./module-manager/bootstrap";
 import * as appUtils from "./utilities/appUtils";
 
 // TODO: Remove startupMainWindow once the main frame is ready.
-import startupMainWindow from "./main";
+import { run as startupMainWindow } from "./main";
 
 process.once("loaded", () => Promise.resolve()
     // Load built-in modules.
@@ -17,7 +17,7 @@ process.once("loaded", () => Promise.resolve()
 
     // Load extension modules.
     .then(() => sfxModuleManager.getComponentAsync("package-manager"))
-    //.then((packageManager) => sfxModuleManager.loadModuleDirAsync(packageManager.packagesDir, "extensions"))
+    .then((packageManager) => packageManager.packagesDir.then((packagesDir) => sfxModuleManager.loadModuleDirAsync(packagesDir, "extensions")))
 
     // Load ad-hoc module
     .then(() => {

@@ -31,10 +31,10 @@ import * as di from "../utilities/di";
 import * as diExt from "../utilities/di.ext";
 import { Communicator } from "../modules/ipc/communicator";
 import { ObjectRemotingProxy } from "../modules/proxy.object/proxy.object";
-import StringPattern from "../modules/remoting/pattern/string";
+import { StringPattern } from "../modules/remoting/pattern/string";
 import * as appUtils from "../utilities/appUtils";
-import DefaultModuleLoadingPolicy from "./default-module-loading-policy";
-import ComponentCollection from "./ComponentCollection";
+import { DefaultModuleLoadingPolicy } from "./default-module-loading-policy";
+import { ComponentCollection } from "./ComponentCollection";
 
 export enum ModuleManagerAction {
     loadModuleAsync = "loadModuleAsync",
