@@ -6,7 +6,7 @@
 import { IChannelProxy, ChannelProxyDataHandler, IMessage } from "../common";
 import { ChannelType } from "sfx.ipc";
 
-export default abstract class ChannelProxyBase<TChannel extends ChannelType> implements IChannelProxy {
+export abstract class ChannelProxyBase<TChannel extends ChannelType> implements IChannelProxy {
     protected dataHandler: ChannelProxyDataHandler;
 
     private _channel: TChannel;

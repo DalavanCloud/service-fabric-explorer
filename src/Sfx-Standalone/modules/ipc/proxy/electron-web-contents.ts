@@ -8,9 +8,9 @@ import { IMessage, UuidNamespace } from "../common";
 import * as electron from "electron";
 import * as uuidv5 from "uuid/v5";
 import * as utils from "../../../utilities/utils";
-import ChannelProxyBase from "./channel-proxy-base";
+import { ChannelProxyBase } from "./channel-proxy-base";
 
-export default class ElectronWebContentsChannelProxy extends ChannelProxyBase<electron.WebContents> {
+export class ElectronWebContentsChannelProxy extends ChannelProxyBase<electron.WebContents> {
     private readonly channelName: string;
 
     private channelListener: electron.IpcMain | electron.IpcRenderer;

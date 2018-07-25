@@ -6,7 +6,7 @@
 import { IComponentCollection, Component, IComponentInfo } from "sfx.module-manager";
 import { IDictionary } from "sfx.common";
 
-export default class ComponentCollection implements IComponentCollection {
+export class ComponentCollection implements IComponentCollection {
     private readonly collection: IDictionary<IComponentInfo<any>>;
 
     constructor() {

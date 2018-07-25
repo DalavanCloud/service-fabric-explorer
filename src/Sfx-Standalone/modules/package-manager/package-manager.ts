@@ -362,7 +362,7 @@ class PackageRepository implements IPackageRepository {
     }
 }
 
-export default class PackageManager implements IPackageManager {
+export class PackageManager implements IPackageManager {
     private readonly settings: ISettings;
 
     private httpClient: IHttpClient;

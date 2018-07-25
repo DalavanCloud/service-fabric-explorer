@@ -15,7 +15,7 @@ import { IHandlerChainBuilder, IAsyncHandlerConstructor } from "sfx.common";
 
 import { HandlerChainBuilder } from "../../utilities/handlerChainBuilder";
 
-export default abstract class HttpClientBuilderBase implements IHttpClientBuilder {
+export abstract class HttpClientBuilderBase implements IHttpClientBuilder {
     protected readonly log: ILog;
     protected readonly requestHandlerBuilder: IHandlerChainBuilder<RequestAsyncProcessor>;
     protected readonly responseHandlerBuilder: IHandlerChainBuilder<ResponseAsyncHandler>;

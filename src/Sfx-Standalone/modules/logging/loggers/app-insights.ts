@@ -32,7 +32,7 @@ function toAppInsightsSeverity(severity: Severity): Contracts.SeverityLevel {
     }
 }
 
-export default class AppInsightsLogger implements ILogger {
+export class AppInsightsLogger implements ILogger {
     private readonly _name: string;
 
     public get name(): Promise<string> {

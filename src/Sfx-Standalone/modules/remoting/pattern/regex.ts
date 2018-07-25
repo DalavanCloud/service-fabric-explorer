@@ -5,7 +5,7 @@
 
 import { IRoutePattern } from "sfx.remoting";
 
-export default class RegexPattern implements IRoutePattern {
+export class RegexPattern implements IRoutePattern {
     private readonly pattern: RegExp;
 
     constructor(pattern: RegExp) {

@@ -16,7 +16,7 @@ export interface IConsoleLoggerSettings extends ILoggerSettings {
     logCallerInfo?: boolean;
 }
 
-export default class ConsoleLogger implements ILogger {
+export class ConsoleLogger implements ILogger {
     private readonly settings: IConsoleLoggerSettings;
 
     private console: Console;

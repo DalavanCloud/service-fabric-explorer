@@ -21,8 +21,8 @@ import * as electron from "electron";
 import * as uuidv4 from "uuid/v4";
 import * as crypto from "crypto";
 
-import HttpClientBase from "./http-client-base";
 import * as utils from "../../utilities/utils";
+import { HttpClientBase } from "./http-client-base";
 import { HttpProtocols } from "./common";
 import { HttpRequestProxy } from "./http-request-proxy";
 import { HttpResponseProxy } from "./http-response-proxy";
@@ -56,7 +56,7 @@ function toCertificateInfo(certificate: electron.Certificate): ICertificateInfo 
     return certInfo;
 }
 
-export default class HttpClient extends HttpClientBase<IHttpRequestOptions> {
+export class HttpClient extends HttpClientBase<IHttpRequestOptions> {
     private readonly serverCertValidator: ServerCertValidator;
 
     private httpSession: electron.Session;

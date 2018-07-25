@@ -8,7 +8,7 @@ import { IModuleLoadingPolicy, IModuleManager, IModuleInfo } from "sfx.module-ma
 
 import { IPackageManagerConfig, PackageManagerSettingsName } from "./common";
 
-export default class ModuleLoadingPolicy implements IModuleLoadingPolicy {
+export class ModuleLoadingPolicy implements IModuleLoadingPolicy {
     private readonly settings: ISettings;
 
     constructor(settings: ISettings) {

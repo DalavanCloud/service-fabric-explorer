@@ -28,7 +28,7 @@ function isCertificate(cert: any): cert is ICertificate {
     return cert && String.isString(cert.type);
 }
 
-export default function handleCertAsync(
+export function handleCertAsync(
     certLoader: ICertificateLoader,
     pkiCertSvc: IPkiCertificateService,
     selectClientCertAsyncHandler: SelectClientCertAsyncHandler,

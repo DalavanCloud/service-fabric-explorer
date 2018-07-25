@@ -19,7 +19,7 @@ import * as appUtils from "../utilities/appUtils";
 import { Communicator } from "../modules/ipc/communicator";
 import { ModuleManager } from "./module-manager";
 
-const bootstrapPromise: Promise<void> = ((): Promise<any> => {
+export const bootstrapPromise: Promise<void> = ((): Promise<any> => {
     appUtils.logUnhandledRejection();
 
     let constructorOptions: IModuleManagerConstructorOptions;
@@ -59,5 +59,3 @@ const bootstrapPromise: Promise<void> = ((): Promise<any> => {
 
     return Promise.resolve();
 })();
-
-export default bootstrapPromise;

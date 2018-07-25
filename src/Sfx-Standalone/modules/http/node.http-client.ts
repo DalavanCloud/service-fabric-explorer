@@ -28,7 +28,7 @@ import { PeerCertificate } from "tls";
 
 import { HttpProtocols, SslProtocols } from "./common";
 import * as utils from "../../utilities/utils";
-import HttpClientBase from "./http-client-base";
+import { HttpClientBase } from "./http-client-base";
 import { HttpRequestProxy } from "./http-request-proxy";
 import { HttpResponseProxy } from "./http-response-proxy";
 
@@ -58,7 +58,7 @@ function toCertificateInfo(cert: PeerCertificate): ICertificateInfo {
     };
 }
 
-export default class HttpClient extends HttpClientBase<http.RequestOptions> {
+export class HttpClient extends HttpClientBase<http.RequestOptions> {
     private readonly certLoader: ICertificateLoader;
 
     private readonly serverCertValidator: ServerCertValidator;

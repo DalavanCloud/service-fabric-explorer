@@ -11,10 +11,10 @@ import * as fs from "fs";
 import * as fileSystem from "../../utilities/fileSystem";
 import * as appUtils from "../../utilities/appUtils";
 import { electron } from "../../utilities/electron-adapter";
-import Settings from "./settings";
-import FileSettings from "./file-settings";
+import { Settings } from "./settings";
+import { FileSettings } from "./file-settings";
 
-export default class SettingsService implements ISettingsService {
+export class SettingsService implements ISettingsService {
 
     private readonly userDataDir: string;
 

@@ -24,7 +24,7 @@ export interface IUpdateSettings {
     defaultChannel: string;
 }
 
-export default class UpdateService implements IUpdateService {
+export class UpdateService implements IUpdateService {
     private readonly log: ILog;
 
     private readonly settings: IUpdateSettings;

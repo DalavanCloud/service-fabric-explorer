@@ -7,9 +7,9 @@ import { IMessage } from "../common";
 import { Socket } from "net";
 
 import * as utils from "../../../utilities/utils";
-import ChannelProxyBase from "./channel-proxy-base";
+import { ChannelProxyBase } from "./channel-proxy-base";
 
-export default class SocketChannelProxy extends ChannelProxyBase<Socket> {
+export class SocketChannelProxy extends ChannelProxyBase<Socket> {
     public static isValidChannel(channel: any): channel is Socket {
         return !utils.isNullOrUndefined(channel)
             && Function.isFunction(channel.write)

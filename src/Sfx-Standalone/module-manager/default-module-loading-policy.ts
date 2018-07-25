@@ -7,7 +7,7 @@ import { IModuleLoadingPolicy, IModuleManager, IModuleInfo } from "sfx.module-ma
 
 import * as utils from "../utilities/utils";
 
-export default class DefaultModuleLoadingPolicy implements IModuleLoadingPolicy {
+export class DefaultModuleLoadingPolicy implements IModuleLoadingPolicy {
     public async shouldLoadAsync(moduleManager: IModuleManager, nameOrInfo: string | IModuleInfo): Promise<boolean> {
         
         if (!utils.isNullOrUndefined(nameOrInfo) && String.isString((<IModuleInfo>nameOrInfo).hostVersion)) {

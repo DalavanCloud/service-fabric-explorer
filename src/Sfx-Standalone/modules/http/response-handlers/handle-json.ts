@@ -37,7 +37,7 @@ function isJsonResponse(log: ILog, response: IHttpResponse): boolean {
     return false;
 }
 
-export default async function handleJsonAsync(nextHandler: ResponseAsyncHandler): Promise<ResponseAsyncHandler> {
+export async function handleJsonAsync(nextHandler: ResponseAsyncHandler): Promise<ResponseAsyncHandler> {
     return async (client: IHttpClient, log: ILog, requestOptions: IRequestOptions, requestData: any, response: IHttpResponse): Promise<any> => {
         const statusCode = await response.statusCode;
         if (statusCode >= 200 && statusCode < 300 && isJsonResponse(log, response)) {

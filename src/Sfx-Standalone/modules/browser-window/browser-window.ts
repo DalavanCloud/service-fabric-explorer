@@ -105,7 +105,7 @@ function addModuleManagerConstructorOptions(
             JSON.stringify(moduleManager.generateConstructorOptions()))];
 }
 
-export default async function createBrowserWindowAsync(
+export async function createBrowserWindowAsync(
     moduleManager: IModuleManager,
     options?: BrowserWindowConstructorOptions,
     handleAuth?: boolean,

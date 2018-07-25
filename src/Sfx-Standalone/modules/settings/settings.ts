@@ -8,7 +8,7 @@ import { ISettings } from "sfx.settings";
 
 import * as utils from "../../utilities/utils";
 
-export default class Settings implements ISettings {
+export class Settings implements ISettings {
     public readonly readonly: boolean;
 
     protected readonly settings: IDictionary<any>;

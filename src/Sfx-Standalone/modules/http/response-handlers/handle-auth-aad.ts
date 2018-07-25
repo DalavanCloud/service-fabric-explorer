@@ -101,7 +101,7 @@ class AadTokenAcquirer {
         }
 }
 
-export default async function handleAadAsync(
+export async function handleAadAsync(
     handlingHost: WebContents,
     aadMetadata: IAadMetadata,
     nextHandler: ResponseAsyncHandler)

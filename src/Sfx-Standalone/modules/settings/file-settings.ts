@@ -8,9 +8,9 @@ import { ISettings } from "sfx.settings";
 import * as fs from "fs";
 
 import * as utils from "../../utilities/utils";
-import Settings from "./settings";
+import { Settings } from "./settings";
 
-export default class FileSettings extends Settings {
+export class FileSettings extends Settings {
     private readonly settingsPath: string;
 
     constructor(settingsPath: string, readOnly?: boolean, parentSettings?: ISettings) {

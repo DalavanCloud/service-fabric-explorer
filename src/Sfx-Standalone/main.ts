@@ -58,7 +58,7 @@ async function startup(): Promise<void> {
     log.writeInfoAsync("application startup finished.");
 }
 
-export default function (): Promise<void> {
+export function run(): Promise<void> {
     app.on("window-all-closed", (event) => undefined);
 
     if (app.isReady()) {

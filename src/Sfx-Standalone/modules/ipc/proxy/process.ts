@@ -7,9 +7,9 @@ import { IMessage } from "../common";
 import { ChildProcess } from "child_process";
 
 import * as utils from "../../../utilities/utils";
-import ChannelProxyBase from "./channel-proxy-base";
+import { ChannelProxyBase } from "./channel-proxy-base";
 
-export default class ProcessChannelProxy extends ChannelProxyBase<ChildProcess> {
+export class ProcessChannelProxy extends ChannelProxyBase<ChildProcess> {
     // Process and ChildProcess share the same functions but ChildProcess has more detailed type information.
     //
     // Process:

@@ -40,7 +40,7 @@ function toJSON(): IDictionary<any> {
     return jsonObject;
 }
 
-export default abstract class HttpClientBase<THttpRequestOptions> implements IHttpClient {
+export abstract class HttpClientBase<THttpRequestOptions> implements IHttpClient {
     protected readonly log: ILog;
 
     protected readonly protocol: string;

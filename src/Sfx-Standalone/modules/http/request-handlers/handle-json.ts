@@ -15,7 +15,7 @@ import { ILog } from "sfx.logging";
 import { HttpContentTypes } from "../common";
 import * as utils from "../../../utilities/utils";
 
-export default async function handleJsonAsync(nextHandler: RequestAsyncProcessor): Promise<RequestAsyncProcessor> {
+export async function handleJsonAsync(nextHandler: RequestAsyncProcessor): Promise<RequestAsyncProcessor> {
     return async (client: IHttpClient, log: ILog, requestOptions: IRequestOptions, requestData: any, request: IHttpRequest): Promise<void> => {
         const contentType = await request.getHeaderAsync("Content-Type");
 
