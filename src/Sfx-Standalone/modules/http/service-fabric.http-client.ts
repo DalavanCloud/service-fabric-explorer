@@ -19,8 +19,13 @@ import { HttpProtocols } from "./common";
 import { ICertificateInfo } from "sfx.cert";
 import { IAsyncHandlerConstructor } from "sfx.common";
 import { WebContents } from "electron";
+import { SelectClientCertAsyncHandler } from "sfx.http.auth";
+import { ILog } from "sfx.logging";
 
-type HttpClientType = "node" | "electron";
+enum HttpClientType {
+    Node = "node",
+    Electron = "electron"
+}
 
 class HttpClient implements IServiceFabricHttpClient {
     public get defaultRequestOptions(): Promise<IRequestOptions> {
@@ -28,6 +33,8 @@ class HttpClient implements IServiceFabricHttpClient {
     }
 
     private _httpClient: IHttpClient;
+
+    private _httpClientType: HttpClientType;
 
     private _defaultRequestOptions: Promise<IRequestOptions>;
 
@@ -39,15 +46,13 @@ class HttpClient implements IServiceFabricHttpClient {
 
     private readonly responseHandlerConstructors: Array<IAsyncHandlerConstructor<ResponseAsyncHandler>>;
 
-    private httpClientType: HttpClientType;
-
     constructor(moduleManager: IModuleManager, webContents?: WebContents) {
         if (!moduleManager) {
             throw new Error("moduleManager must be provided.");
         }
 
-        this.httpClientType = "node";
         this.webContents = webContents;
+        this.setHttpClientType(HttpClientType.Node);
     }
 
     public async handleResponseAsync(constructor: IAsyncHandlerConstructor<ResponseAsyncHandler>): Promise<IServiceFabricHttpClient> {
@@ -109,6 +114,17 @@ class HttpClient implements IServiceFabricHttpClient {
             .then((client) => client.requestAsync(requestOptions, data));
     }
 
+    private getHttpClientType(): HttpClientType {
+        return this._httpClientType;
+    }
+
+    private setHttpClientType(type: HttpClientType): void {
+        if (this._httpClientType !== type) {
+            this._httpClientType = type;
+            this._httpClient = undefined;
+        }
+    }
+
     private async getHttpClientAsync(): Promise<IHttpClient> {
         if (!this._httpClient) {
             this._httpClient = await this.buildHttpClientAsync();
@@ -127,7 +143,7 @@ class HttpClient implements IServiceFabricHttpClient {
 
     private async buildHttpClientAsync(httpClientType?: HttpClientType): Promise<IHttpClient> {
         if (!httpClientType) {
-            httpClientType = this.httpClientType;
+            httpClientType = this.getHttpClientType();
         }
 
         const builder = httpClientType === "electron" ? await this.getNodeHttpClientBuilderAsync() : await this.getElectronHttpClientBuilderAsync();
@@ -150,31 +166,86 @@ class HttpClient implements IServiceFabricHttpClient {
             await builder.handleResponseAsync(constructor);
         }
 
-        return await builder.buildAsync(HttpProtocols.any);
+        const client = await builder.buildAsync(HttpProtocols.any);
+
+        await client.updateDefaultRequestOptionsAsync(await this.defaultRequestOptions);
+
+        return client;
     }
 
+    private readonly selectCert: SelectClientCertAsyncHandler =
+        (url: string, certInfos: Array<ICertificateInfo>): Promise<ICertificate | ICertificateInfo> => {
+
+        }
+
     private readonly buildCertAuthHandler: IAsyncHandlerConstructor<ResponseAsyncHandler> =
-        (nextHandler: ResponseAsyncHandler): Promise<ResponseAsyncHandler> => {
+        async (nextHandler: ResponseAsyncHandler): Promise<ResponseAsyncHandler> => {
 
-            const handleAuthCertConstructor = await this.moduleManager.getComponentAsync("http.response-handlers.handle-auth-cert", this.selectCert);
+            const handleAuthCertAsyncConstructor = await this.moduleManager.getComponentAsync("http.response-handlers.handle-auth-cert", this.selectCert);
+            const handleAuthCert = await handleAuthCertAsyncConstructor(nextHandler);
 
-            return (client: IHttpClient, log: ILog, requestOptions: IRequestOptions, requestData: any, response: IHttpResponse): Promise<any> => {
+            return async (client: IHttpClient, log: ILog, requestOptions: IRequestOptions, requestData: any, response: IHttpResponse): Promise<any> => {
+                const statusCode = await response.statusCode;
+
+                if (HttpClientType.Node === this.getHttpClientType()) {
+                    return await handleAuthCert(client, log, requestOptions, requestData, response);
+                }
+
                 if (statusCode === 403
-                    && 0 === "Client certificate required".localeCompare(await response.statusMessage, undefined, { sensitivity: "accent" })
-                    && this.httpClientType === "node") {
-                        return handleAuthCert()
-                    }
+                    && 0 === "Client certificate required".localeCompare(await response.statusMessage, undefined, { sensitivity: "accent" })) {
+
+                    this.setHttpClientType(HttpClientType.Node);
+
+                    return this.getHttpClientAsync().then((client) => client.requestAsync(requestOptions, requestData));
+                }
+
+                if (Function.isFunction(nextHandler)) {
+                    return await nextHandler(client, log, requestOptions, requestData, response);
+                }
+
+                return response;
             };
         }
 
     private readonly buildAadAuthHandler: IAsyncHandlerConstructor<ResponseAsyncHandler> =
-        (nextHandler: ResponseAsyncHandler): Promise<ResponseAsyncHandler> => {
+        async (nextHandler: ResponseAsyncHandler): Promise<ResponseAsyncHandler> => {
+            return async (client: IHttpClient, log: ILog, requestOptions: IRequestOptions, requestData: any, response: IHttpResponse): Promise<any> => {
+                const statusCode = await response.statusCode;
 
+                if (statusCode === 401 || statusCode === 403) {
+                    
+                }
+            };
         }
 
     private readonly buildWindowsAuthHandler: IAsyncHandlerConstructor<ResponseAsyncHandler> =
-        (nextHandler: ResponseAsyncHandler): Promise<ResponseAsyncHandler> => {
+        async (nextHandler: ResponseAsyncHandler): Promise<ResponseAsyncHandler> => {
+            const WinAuthChallengeHeader = "WWW-Authenticate";
+            const ChallengeType_Ntlm = "NTLM";
+            const ChallengeType_Negotiate = "Negotiate";
 
+            return async (client: IHttpClient, log: ILog, requestOptions: IRequestOptions, requestData: any, response: IHttpResponse): Promise<any> => {
+                const statusCode = await response.statusCode;
+                const headers = await response.headers;
+
+                if (statusCode === 401
+                    && (headers[WinAuthChallengeHeader] === ChallengeType_Ntlm
+                        || headers[WinAuthChallengeHeader] === ChallengeType_Negotiate)) {
+
+                    if (HttpClientType.Node === this.getHttpClientType()) {
+
+                        this.setHttpClientType(HttpClientType.Electron);
+
+                        return this.getHttpClientAsync().then((client) => client.requestAsync(requestOptions, requestData));
+                    }
+                }
+
+                if (Function.isFunction(nextHandler)) {
+                    return await nextHandler(client, log, requestOptions, requestData, response);
+                }
+
+                return response;
+            };
         }
 
     private readonly serverCertValidator: ServerCertValidator =
