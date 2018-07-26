@@ -2,10 +2,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License file under the project root for license information.
 //-----------------------------------------------------------------------------
-import { IModuleInfo, IModule } from "sfx.module-manager";
+import { IModuleInfo, IModule, IModuleManager } from "sfx.module-manager";
 import { ILog } from "sfx.logging";
 import { ICertificateLoader, IPkiCertificateService } from "sfx.cert";
-import { IHttpClient, IHttpClientBuilder, ServerCertValidator, RequestAsyncProcessor, ResponseAsyncHandler } from "sfx.http";
+
+import {
+    IHttpClient,
+    IHttpClientBuilder,
+    ServerCertValidator,
+    RequestAsyncProcessor,
+    ResponseAsyncHandler,
+    IServiceFabricHttpClient
+} from "sfx.http";
+
 import { SelectClientCertAsyncHandler, IAadMetadata } from "sfx.http.auth";
 import { WebContents } from "electron";
 import { IAsyncHandlerConstructor } from "sfx.common";
@@ -16,6 +25,14 @@ import { HttpProtocols } from "./common";
 
 (<IModule>exports).getModuleMetadata = (components): IModuleInfo => {
     components
+        .register<IServiceFabricHttpClient>({
+            name: "http.http-client.service-fabric",
+            version: appUtils.getAppVersion(),
+            singleton: true,
+            descriptor: (moduleManager: IModuleManager, webContents?: WebContents) =>
+                import("./service-fabric.http-client").then((module) => module.createAsync(moduleManager, webContents)),
+            deps: ["module-manager"]
+        })
         .register<IHttpClient>({
             name: "http.http-client",
             version: appUtils.getAppVersion(),

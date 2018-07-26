@@ -104,8 +104,7 @@ class AadTokenAcquirer {
 export async function handleAadAsync(
     handlingHost: WebContents,
     aadMetadata: IAadMetadata,
-    nextHandler: ResponseAsyncHandler)
-    : Promise<ResponseAsyncHandler> {
+    nextHandler: ResponseAsyncHandler): Promise<ResponseAsyncHandler> {
 
     return async (client: IHttpClient, log: ILog, requestOptions: IRequestOptions, requestData: any, response: IHttpResponse): Promise<any> => {
         const statusCode = await response.statusCode;

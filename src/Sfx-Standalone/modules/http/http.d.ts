@@ -2,6 +2,7 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // Licensed under the MIT License. See License file under the project root for license information.
 //-----------------------------------------------------------------------------
+/// <reference path="./service-fabric.http-client.d.ts" />
 
 declare module "sfx.module-manager" {
     import {
@@ -13,7 +14,7 @@ declare module "sfx.module-manager" {
     } from "sfx.http";
 
     import { WebContents } from "electron";
-    import { IAsyncHandlerConstructor } from "sfx.common";
+    import { IAsyncHandlerConstructor, IDisposable } from "sfx.common";
     import { SelectClientCertAsyncHandler, IAadMetadata } from "sfx.http.auth";
 
     export interface IModuleManager {
